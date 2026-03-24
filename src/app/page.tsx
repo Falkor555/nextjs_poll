@@ -1,7 +1,13 @@
-export default function Home() {
-  return (
-    <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-      Exemple
-    </h1>
-  );
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+export default async function Home() {
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if (session) {
+    redirect("/poll");
+  } else {
+    redirect("/login");
+  }
 }
